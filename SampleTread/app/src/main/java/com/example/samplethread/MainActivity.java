@@ -1,16 +1,21 @@
 package com.example.samplethread;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Binder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+
 public class MainActivity extends AppCompatActivity {
-    int value = 0;
     TextView textView;
+    MainHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,28 +25,52 @@ public class MainActivity extends AppCompatActivity {
 
         Button button = findViewById(R.id.button);
         TextView textView = findViewById(R.id.textview);
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BackgroundTread thread = new BackgroundTread();
-                thread.run();
+                textView.setText("why....");
+                BackgroundThread thread = new BackgroundThread();
+                thread.start();
             }
         });
+        handler = new MainHandler();
     }
-    //Tread 인터페이스를 확장시킨다.
-    class BackgroundTread extends Thread{
-        public void run(){
-            for (int i = 0 ; i < 100 ; i++ ){
+    class BackgroundThread extends Thread{
+        int value = 0;
+
+        @Override
+        public void run() {
+            super.run();
+            for (int i = 0; i < 100 ; i++){
                 try{
-                    Thread.sleep(1000);
-                } catch (Exception e) {
+                    Thread.sleep(5000);
+
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 value += 1;
                 Log.d("Thread","value : "+value);
-                //textView.setText("vlaue :" +value);
+                Message message = handler.obtainMessage();
+                Bundle bundle = new Bundle();
+                bundle.putInt("value",value);
+                message.setData(bundle);
+                handler.sendMessage(message);
             }
         }
     }
+    class MainHandler extends Handler{
+        final TextView textView = findViewById(R.id.textview);
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+
+            Bundle bundle = msg.getData();
+            int value = bundle.getInt("value");
+            Log.d("Fuck",Integer.toString(value));
+        }
+    }
+
+
+
+
 }
