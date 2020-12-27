@@ -1,4 +1,12 @@
 # AndroidTutorial
+
+## View
+### SampleView
+* 제공된 widget 의 button을 상속한 Mybutton 클래스 정의
+* 클릭 이벤트 발생 시 배경색과 글자색을 바꾼다
+* 클릭이 취소되거나 끝나는 등의 이벤트 발생시 색을 다시 바꾼다
+* invalidate() 메서드를 통해 그래픽을 다시 그린다
+
 ## Thread
 ### SampleThread
 * Runnable을 이용한 쓰레드 사용
