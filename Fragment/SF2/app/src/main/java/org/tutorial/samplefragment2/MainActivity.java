@@ -24,4 +24,4 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Imag
     public void onImageSelected(int position) {
         viewFragment.setImage(images[position]);
     }
-}c
+}
